@@ -1,0 +1,243 @@
+import numpy as np
+import time 
+import os
+import copy
+import math
+
+
+
+mapM = []
+startpose =(0,0)
+flag = (0,0)
+player =[0,0]
+
+bug = ""
+
+
+
+
+
+
+def open_file():
+	with open("C:/studyC/map_make.txt",'r') as f:
+		a = f.read()
+		print(a)
+
+
+def prepare():            #초기로딩.
+	global startpose
+	global flag
+	global player
+	global mapM
+
+
+
+	mapM = np.array([['o','x' ,'o' ,'x', 'x', 'x' ,'x', 'o' ,'F'],#[0][0],[0][1]________[0][8]
+					['o','o' ,'o' ,'x', 'x', 'o' ,'o', 'o' ,'x'],#[1][0]
+					['o','x' ,'o' ,'x', 'o', 'o' ,'x', 'o' ,'x'],  #2
+					['o','o' ,'o' ,'o', 'o', 'x' ,'x', 'o' ,'o'],  # 3
+					['x','x' ,'x' ,'x', 'o', 'o' ,'x', 'x' ,'x'],  #4
+					['o','o' ,'o' ,'o', 'x', 'o' ,'o', 'o' ,'o'],  # 5
+					['x','o' ,'x' ,'o', 'o', 'o' ,'x', 'o' ,'x'],  # 6
+					['o','o' ,'o' ,'o', 'x', 'o' ,'o', 'o' ,'x'],  #7
+					['S','x' ,'x' ,'o', 'o', 'x' ,'x', 'o' ,'x']])#8
+
+
+	rowNum = 0  #세로(행)
+	colNum = 0  #가로(열)
+
+	for cols in mapM:                                 #mapM을 cols에 넣는과정 행만 들어간다. 리스트로 묶여있기 떄문         #시작위치와 도착위치 파악.(전수 조사)
+
+		for col in cols:                              #행의 요소들을 cols를 col에 넣는 과정.(한 리스트안에 들어있는 요소들을 넣는 과정)
+
+			#print(f'({rowNum},{colNum}) {col}')
+
+
+			if col == "S":
+				startpose = (rowNum,colNum)
+			if col =="F":
+				flag = (rowNum,colNum)
+
+			colNum = colNum + 1 
+
+
+		rowNum = rowNum + 1
+		colNum = 0 
+													#copy복사는 말그대로 원본을 놔두고 복사한것. 
+
+													#a = b는 가르키는 주소까지 같게 만든다.
+	player[0] = startpose[0]                        #player = copy.deepcopy(startpose)
+	player[1] = startpose[1]                                                #플레이어의 시작위치를 파악. =현재위치와 같게
+									  # player = copy(startpose)
+													# player = (startpose[0], startpose[1])
+
+
+
+
+
+											   # #현재의 상태를 화면에 표시해주기.
+											   # #사용자가 갈수있는 방향 파악 및 표시.
+											   # map[player[0]+1][player[1]+0] == 'o'
+											   # #사용자의 입력을 받아 player의 위치 수정.
+
+
+
+def runloop():
+
+	global bug
+	global player
+	global mapM
+
+	
+
+   
+
+	
+
+	
+
+while True:
+	
+	mapM[player[0]][player[1]] = "P"
+	if not player:
+		mapM =[]
+
+	
+											 #player의 포지션일떄만, 
+			  #player의 0번 인덱스와 player의 1번 인덱스 즉,, player의 좌표, 좌표는mapM의 요소를 아는것.
+											#player의 좌표가 바뀌면 바뀐 곳마다. p로 바뀜.
+											#플레이어의 값에 따라서 p가 움직여야된다.
+
+
+	print(mapM)
+	a = input('P의 움직임은:')
+		
+																					#player의 좌표가 바뀐다.
+		
+
+		
+			
+	if a == '8':   
+			# # if mapM[0]< 
+			#     print("벽입니다.")
+
+		if player[0]-1 <0:
+			player[0] = player[0]+1
+			player[1] = player[1]
+			print("벽입니다.")
+			print(player)
+			
+
+		if mapM[player[0]-1][player[1]] == 'o':
+			player[0] = player[0] -1
+			player[1] = player[1]
+			print(player)
+
+
+			
+
+
+		elif mapM[player[0]-1][player[1]] == 'x':
+			print("벽입니다.")
+			print(player)
+
+		elif mapM[player[0]-1][player[1]+0] == 'S':
+			player[0] = player[0] -1
+			player[1] = player[1]
+			print("출발점입니다.")
+			print(player)
+
+		elif mapM[player[0]-1][player[1]+0] == 'F':
+			print("도착입니다!")
+			print(player)
+
+	if a == '2':
+
+		if player[0]+1 >8:
+
+			player[0] = player[0]-1
+			player[1] = player[1]
+			print("뒤로 한칸 갑니다.")
+			print(player)
+			
+				
+
+		if mapM[player[0]+1][player[1]] == 'o':
+
+			player[0] = player[0]+1
+			player[1] = player[1]
+			print(player)
+			
+		elif mapM[player[0]+1][player[1]] == 'x':
+			print("벽입니다.")
+			print(player)
+		elif mapM[player[0]+1][player[1]] == 'S':
+			player[0] = player[0]+1
+			player[1] = player[1]
+			print(player)
+			print("출발점입니다.")
+			
+		else:
+			print("도착입니다!")
+			print(player)
+
+
+	if a == '6':
+		if player[1]>8:
+			player[1] = player[1]-1
+			print("벽입니다.")
+		if mapM[player[0]][player[1]+1] == 'o':
+			player[0] = player[0]
+			player[1] = player[1]+1
+			print(player)
+				
+
+		elif mapM[player[0]][player[1]+1] == 'x':
+			print("벽입니다.")
+			print(player)
+
+		elif mapM[player[0]][player[1]+1] == 'S':
+			print("출발점입니다.")
+			print(player)
+		elif mapM[player[0]][player[1]+1] == 'F':
+			player[0] = player[0]
+			player[1] = player[1]+1
+			print(player)
+			print("도착입니다!")
+				
+
+	if a == '4':
+
+		if player[1]<0:
+			player[1] = player[1]+1
+			print("벽입니다.")
+			print(player)
+
+		if mapM[player[0]][player[1]-1] == 'o':
+			player[0] = player[0] 
+			player[1] = player[1] -1
+			 
+			print(player)
+		elif mapM[player[0]][player[1]-1] == 'x':
+			print("벽입니다.")
+			print(player)
+		elif mapM[player[0]][player[1]-1] == 'S':
+			print("출발점입니다.")
+			print(player)
+		else:
+			print("도착입니다!")
+			print(player)
+		
+
+
+
+
+
+
+
+
+
+
+if __name__ =="__main__":
+	prepare()
+	runloop()
